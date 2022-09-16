@@ -13,3 +13,6 @@ https://github.com/AnaNek/Information_security
 
 Пума (шарп)
 https://github.com/Winterpuma/bmstu_security/tree/master 
+
+
+https://github.com/Kulikov17/BMSTU-Information-Security 
