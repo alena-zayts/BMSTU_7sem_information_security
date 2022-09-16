@@ -1,0 +1,12 @@
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\bin\Debug\net6.0\KeyController.deps.json
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\bin\Debug\net6.0\KeyController.dll
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\bin\Debug\net6.0\KeyController.pdb
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\obj\Debug\net6.0\KeyController.csproj.AssemblyReference.cache
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\obj\Debug\net6.0\KeyController.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\obj\Debug\net6.0\KeyController.AssemblyInfoInputs.cache
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\obj\Debug\net6.0\KeyController.AssemblyInfo.cs
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\obj\Debug\net6.0\KeyController.csproj.CoreCompileInputs.cache
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\obj\Debug\net6.0\KeyController.dll
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\obj\Debug\net6.0\refint\KeyController.dll
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\obj\Debug\net6.0\KeyController.pdb
+C:\Users\alena\Desktop\7_sem\information_security\lab_1\KeyController\obj\Debug\net6.0\ref\KeyController.dll

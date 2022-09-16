@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "VQDW64ZtsDJuaWFYXtMvJIFlGrt5h8/TBveur0yrh+5NcIX2FmGOaBIS1v49BCu3XeVWywD9PSihF4xdtEPpxA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\alena\\Desktop\\7_sem\\information_security\\lab_1\\MainProgram\\MainProgram.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\alena\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",
+    "C:\\Users\\alena\\.nuget\\packages\\system.management\\6.0.0\\system.management.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

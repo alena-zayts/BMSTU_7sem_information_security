@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "iJLtx/NKJuGd0hYC6opFDIb/CS1rjfdGqW52GzBOfKdcHKwnMF7D0YXuCuikv19MhTD+OadPGOugGfd3604wTg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\alena\\Desktop\\7_sem\\information_security\\lab_1\\KeyController\\KeyController.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\alena\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",
+    "C:\\Users\\alena\\.nuget\\packages\\system.management\\6.0.0\\system.management.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
