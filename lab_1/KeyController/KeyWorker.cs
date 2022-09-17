@@ -200,12 +200,13 @@ namespace KeyController
 
         public static string generateKey()
         {
-            string uniqueValue1 = getUniqueValue1();
-            string uniqueValue2 = getUniqueValue2();
-            string systemNameAndVendor = getSystemNameAndVendor();
-
+            //string uniqueValue1 = getUniqueValue1();
             //return computeSHA256(uniqueValue1);
+
+            string uniqueValue2 = getUniqueValue2();
             return computeSHA256(uniqueValue2);
+
+            //string systemNameAndVendor = getSystemNameAndVendor();
             //return computeSHA256(systemNameAndVendor);
 
             //return ComputeHmacsha1(uniqueValue1, systemNameAndVendor);
