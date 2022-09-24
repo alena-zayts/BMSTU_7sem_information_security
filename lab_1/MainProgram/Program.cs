@@ -18,7 +18,9 @@ namespace MainProgram
             }
             else
             {
-                Console.WriteLine("Authentication was successful!");
+                Console.WriteLine("Authentication was successful!\n");
+                Console.WriteLine("Hello, world!!");
+
             }
 
             Console.ReadKey();

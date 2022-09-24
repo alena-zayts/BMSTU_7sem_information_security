@@ -10,6 +10,7 @@ namespace KeyController
     {
         public const string keyPath = "../../../../key.txt";
 
+        #region old
         //серийный номер и SoftwareElementID BIOS
         static string getUniqueValue1()
         {
@@ -65,10 +66,44 @@ namespace KeyController
 
             return "";
         }
+        static string getSystemNameAndVendor()
+        {
+            /*
+             * Служебная программа командной строки WMI (WMIC) предоставляет интерфейс командной строки для Windows 
+             * инструментария управления (WMI). 
+            */
+            Process.Start("cmd.exe", "/C " + "wmic csproduct get name > name.txt"); // имя системы
+            Process.Start("cmd.exe", "/C " + "wmic csproduct get vendor > vendor.txt"); // производитель
+            Thread.Sleep(3000);
+            string res = File.ReadAllLines("name.txt")[1] + File.ReadAllLines("vendor.txt")[1];
+            return res;
+
+        }
+        /*
+         * HMACSHA1 — это тип хэш-алгоритма, созданного из хэш-функции SHA1 и используемого в качестве кода проверки 
+         * подлинности сообщения на основе хэша или HMAC. Процесс HMAC смешивает секретный ключ с данными сообщения, 
+         * хэширует результат с хэш-функцией, снова смешивает хэш-значение с секретным ключом, 
+         * а затем применяет хэш-функцию во второй раз. Выходной хэш имеет длину 160 бит.
+         */
+        static string ComputeHmacsha1(string data, string key)
+        {
+            byte[] dataBytes = Encoding.Default.GetBytes(data);
+            byte[] keyBytes = Encoding.Default.GetBytes(key);
+
+            using (var hmac = new HMACSHA1(keyBytes))
+            {
+                return Convert.ToBase64String(hmac.ComputeHash(dataBytes));
+            }
+        }
+        #endregion old
+
+
+        #region new
 
         static string getUniqueValue2()
         {
             string query = "SELECT * FROM Win32_Processor";
+            //string query = "SELECT * FROM Win32_BIOS";
             // Извлекает коллекцию управляющих объектов в соответствии с заданным запросом.
             // После создания экземпляр этого класса принимает в качестве исходных данных запрос WMI,
             // представленный объектом ObjectQuery
@@ -79,8 +114,8 @@ namespace KeyController
             //коллекцию управляющих объектов, которые удовлетворяют запросу
             foreach (ManagementObject info in searcher.Get())
             {
-                var tmp1 = info["UniqueId"]; //null
-                return info["SerialNumber"].ToString() + info["Family"].ToString();
+                return info["UniqueId"].ToString() + info["Family"].ToString();// + info["SerialNumber"].ToString();
+                
                 /*
                  * https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor
 {
@@ -145,24 +180,8 @@ namespace KeyController
                  */
             }
 
-            return "";
+            throw new Exception("Didn't find data");
         }
-
-        static string getSystemNameAndVendor()
-        {
-            /*
-             * Служебная программа командной строки WMI (WMIC) предоставляет интерфейс командной строки для Windows 
-             * инструментария управления (WMI). 
-            */
-            Process.Start("cmd.exe", "/C " + "wmic csproduct get name > name.txt"); // имя системы
-            Process.Start("cmd.exe", "/C " + "wmic csproduct get vendor > vendor.txt"); // производитель
-            Thread.Sleep(3000);
-            string res = File.ReadAllLines("name.txt")[1] + File.ReadAllLines("vendor.txt")[1];
-            return res;
-
-        }
-
-        #region hashing
 
         /*
          * Хэш используется в качестве уникального значения фиксированного размера, 
@@ -180,31 +199,16 @@ namespace KeyController
             return Convert.ToBase64String(hashValue);
         }
 
-        /*
-         * HMACSHA1 — это тип хэш-алгоритма, созданного из хэш-функции SHA1 и используемого в качестве кода проверки 
-         * подлинности сообщения на основе хэша или HMAC. Процесс HMAC смешивает секретный ключ с данными сообщения, 
-         * хэширует результат с хэш-функцией, снова смешивает хэш-значение с секретным ключом, 
-         * а затем применяет хэш-функцию во второй раз. Выходной хэш имеет длину 160 бит.
-         */
-        static string ComputeHmacsha1(string data, string key)
-        {
-            byte[] dataBytes = Encoding.Default.GetBytes(data);
-            byte[] keyBytes = Encoding.Default.GetBytes(key);
 
-            using (var hmac = new HMACSHA1(keyBytes))
-            {
-                return Convert.ToBase64String(hmac.ComputeHash(dataBytes));
-            }
-        }
-#endregion
+        #endregion new
 
         public static string generateKey()
         {
-            //string uniqueValue1 = getUniqueValue1();
-            //return computeSHA256(uniqueValue1);
+            string uniqueValue1 = getUniqueValue1();
+            return computeSHA256(uniqueValue1);
 
-            string uniqueValue2 = getUniqueValue2();
-            return computeSHA256(uniqueValue2);
+            //string uniqueValue2 = getUniqueValue2();
+            //return computeSHA256(uniqueValue2);
 
             //string systemNameAndVendor = getSystemNameAndVendor();
             //return computeSHA256(systemNameAndVendor);
