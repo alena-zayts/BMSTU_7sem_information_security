@@ -131,7 +131,7 @@ class Enigma:
     #
     #     i7 = self.__rotor1.getIndex(v6)
     #
-    #     v8 = SYMBOLS[i7]
+    #     v8 = SYMBOLS_FOR_ENIGMA[i7]
     #
     #     return v8
 

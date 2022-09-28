@@ -1,166 +1,134 @@
-import random
-import sys
-from struct import pack
+from random import shuffle, seed
+import copy
+import os
 
-SYMBOL_COUNT = 256
-ROTORS_COUNT = 3
-BUF_SIZE = 512
+seed(0)
+SYMBOLS_COUNT = 256
+SYMBOLS_FOR_ENIGMA = [i for i in range(SYMBOLS_COUNT)]
+SYMBOLS = [chr(i) for i in range(SYMBOLS_COUNT)]
 
 
 class Rotor:
     def __init__(self):
-        self.__offset = 0
-        self.full_cycle = False
-        # self.alphabet = [chr(i) for i in range(SYMBOL_COUNT)]
-        self.routes = list(range(SYMBOL_COUNT))
-        self.initial_routes = self.routes
-        random.shuffle(self.routes)
-
-    def reset(self):
-        self.__offset = 0
-        self.routes = self.initial_routes
+        self.__countShift = 0
+        self.__values = SYMBOLS_FOR_ENIGMA.copy()
+        shuffle(self.__values)
 
     def __str__(self):
         s = ''
-        for i in range(SYMBOL_COUNT):
-            s += '%i => %i\n' % (i, self.routes[i])
+        for i in range(SYMBOLS_COUNT):
+            s += f'{self.__values[i]}'
         return s
 
-    def forward(self, index):
-        return self.routes[index]
+    def getValue(self, index: int) -> int:
+        return self.__values[index]
 
-    def backwards(self, index):
-        return self.routes.index(index)
+    def getIndex(self, value: int) -> int:
+        return self.__values.index(value)
 
-    def rotate(self):
-        self.routes = self.routes[1:] + self.routes[:1]
-        self.__offset += 1
-        if self.__offset == SYMBOL_COUNT:
-            self.__offset = 0
-            self.full_cycle = True
-        else:
-            self.full_cycle = False
+    def shift(self) -> None:
+        symb = self.__values.pop(0)
+        self.__values.append(symb)
+        self.__countShift += 1
+        if self.__countShift == SYMBOLS_COUNT:
+            self.__countShift = 0
+
+    @property
+    def fullTurnover(self) -> bool:
+        return self.__countShift == 0
 
 
 class Reflector:
     def __init__(self):
-        self.routes = [0] * SYMBOL_COUNT
-        first_half = []
-        if SYMBOL_COUNT % 2:
-            first_half = list(range(SYMBOL_COUNT // 2 + 1, SYMBOL_COUNT))
-            random.shuffle(first_half)
-            self.routes[:SYMBOL_COUNT // 2] = first_half
-            self.routes[SYMBOL_COUNT // 2] = SYMBOL_COUNT // 2
-        else:
-            first_half = list(range(SYMBOL_COUNT // 2, SYMBOL_COUNT))
-            random.shuffle(first_half)
-            self.routes[:SYMBOL_COUNT // 2] = first_half
-
-        n = len(first_half)
-        for i in range(n):
-            self.routes[first_half[i]] = i
+        self.__values = SYMBOLS_FOR_ENIGMA.copy()
+        shuffle(self.__values)
 
     def __str__(self):
         s = ''
-        for i in range(SYMBOL_COUNT):
-            s += '%i => %i\n' % (i, self.routes[i])
+        for i in range(SYMBOLS_COUNT // 2):
+            s += f'({self.__values[i * 2]},{self.__values[i * 2 + 1]})'
         return s
 
-    def reflect(self, index):
-        return self.routes[index]
+    def getReflectedValue(self, value: int) -> int:
+        index = self.__values.index(value)
+        reflection_index = index + 1 if index % 2 == 0 else index - 1
+        return self.__values[reflection_index]
 
 
 class Enigma:
-    def __init__(self, rotors, reflector):
-        self.rotors = rotors
-        self.reflector = reflector
+    def __init__(self, rotorsAmount=3, with_print=False):
+        self.__rotorsAmount = rotorsAmount
+        self.__rotors = [Rotor() for _ in range(self.__rotorsAmount)]
 
-    def reset(self):
-        for rotor in self.rotors:
-            rotor.reset()
+        self.__reflector = Reflector()
+        if with_print:
+            print(str(self))
 
     def __str__(self):
         s = ''
-        i = 0
-        for rotor in self.rotors:
-            s += 'Rotor[%i]:\n' % (i)
-            s += rotor.__str__()
-            i += 1
-
-        s += "Reflector:\n" + self.reflector.__str__()
+        for i in range(self.__rotorsAmount):
+            s += f'Rotor{i}: ' + str(self.__rotors[i])
+        s += '\nReflector: ' + str(self.__reflector)
         return s
 
-    def encrypt(self, symbol):
-        encrypted = symbol
-        n = len(self.rotors)
+    def __encipherSymbol(self, symbol: chr) -> chr:
+        cur = ord(symbol)
+        for i in range(self.__rotorsAmount):
+            cur = self.__rotors[i].getValue(cur)
 
-        for rotor in self.rotors:
-            encrypted = rotor.forward(encrypted)
+        cur = self.__reflector.getReflectedValue(cur)
 
-        encrypted = self.reflector.reflect(encrypted)
+        for i in range(self.__rotorsAmount - 1, -1, -1):
+            cur = self.__rotors[i].getIndex(cur)
 
-        for rotor in self.rotors[::-1]:
-            encrypted = rotor.backwards(encrypted)
+        cur = SYMBOLS[cur]
 
-        self.rotors[0].rotate()
-        for i in range(1, n):
-            if self.rotors[i - 1].full_cycle:
-                self.rotors[i].rotate()
+        return cur
 
-        return encrypted
+    def encipherText(self, text: str) -> str:
+        encipheredText = ''
 
-    def encrypt_data(self, data):
-        encrypted_data = b''
-        for symbol in data:
-            encrypted = self.encrypt(symbol)
-            encrypted_data += pack("B", encrypted)
-        return encrypted_data
+        for symbol in text:
+            encipheredSymbol = self.__encipherSymbol(symbol)
+            encipheredText += encipheredSymbol
 
+            for i in range(self.__rotorsAmount):
+                self.__rotors[i].shift()
+                if not self.__rotors[i].fullTurnover:
+                    break
 
-def main():
-    filename = 'text.rar'
-    try:
-        data = open(filename, "rb")
-    except IndexError:
-        print("Error with open")
-        return
+        return encipheredText
 
-    rotors = [0] * ROTORS_COUNT
+    def encipherFile(self, inputFileName: str, outputFileName: str) -> None:
+        with open(inputFileName, 'rb') as f:
+            textByte = f.read()
 
-    for i in range(ROTORS_COUNT):
-        rotors[i] = Rotor()
+        textSymbols = ""
+        for byte in textByte:
+            textSymbols += chr(byte)
 
-    reflector = Reflector()
-    enigma = Enigma(rotors, reflector)
+        print(f"Text to encipher:\n'''\n{textSymbols}\n'''")
+        textSymbolsEnciphered = self.encipherText(textSymbols)
+        print(f"Enciphered text:\n'''\n{textSymbolsEnciphered}\n'''")
 
-    enc_file = open("enc_" + filename, "wb")
+        textBytesEnciphered = b""
+        for symbolEnciphered in textSymbolsEnciphered:
+            textBytesEnciphered += bytes([ord(symbolEnciphered)])
 
-    lines = data.read()
-    data.close()
-    encrypted_data = enigma.encrypt_data(lines)
-    enc_file.write(encrypted_data)
-    enc_file.close()
-
-    data_str = 'Input data:%s\n' % (lines)
-    print(data_str)
-
-    enc_str = 'Encrypted:%s\n' % (encrypted_data)
-    print(enc_str)
-
-    enc_file = open("enc_" + filename, "rb")
-    dec_file = open("dec_" + filename, "wb")
-
-    enigma.reset()
-
-    lines = enc_file.read()
-    enc_file.close()
-    decrypted_data = enigma.encrypt_data(lines)
-    dec_file.write(decrypted_data)
-    dec_file.close()
-
-    dec_str = 'Decrypted:%s\n' % (decrypted_data)
-    print(dec_str)
+        with open(outputFileName, 'wb') as f:
+            f.write(textBytesEnciphered)
 
 
-if __name__ == "__main__":
-    main()
+enigma = Enigma(rotorsAmount=4, with_print=True)
+enigmaCopy = copy.deepcopy(enigma)
+
+fileName = "dist\main2\main2.rar"
+encipheredFileName = fileName[:-4] + '_enciphered' + fileName[-4:]
+decipheredFileName = fileName[:-4] + '_deciphered' + fileName[-4:]
+
+print('Forward\n')
+enigma.encipherFile(fileName, encipheredFileName)
+print('\nBackwards\n')
+enigmaCopy.encipherFile(encipheredFileName, decipheredFileName)
+
+
