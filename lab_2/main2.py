@@ -17,7 +17,7 @@ class Rotor:
     def __str__(self):
         s = ''
         for i in range(SYMBOLS_COUNT):
-            s += f'{self.__values[i]}'
+            s += f'{self.__values[i]} '
         return s
 
     def getValue(self, index: int) -> int:
@@ -119,10 +119,10 @@ class Enigma:
             f.write(textBytesEnciphered)
 
 
-enigma = Enigma(rotorsAmount=4, with_print=True)
+enigma = Enigma(rotorsAmount=3, with_print=True)
 enigmaCopy = copy.deepcopy(enigma)
 
-fileName = "dist\main2\main2.rar"
+fileName = "text.rar"
 encipheredFileName = fileName[:-4] + '_enciphered' + fileName[-4:]
 decipheredFileName = fileName[:-4] + '_deciphered' + fileName[-4:]
 
