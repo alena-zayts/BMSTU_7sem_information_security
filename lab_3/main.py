@@ -244,13 +244,60 @@ class Cryptographer:
         return permutatedJoinedMessage
 
 
-def encipherFile(filename_in, filename_out, direction):
-    cryptographer = Cryptographer()
+def fileToMessageBlocks(filename_in):
     with open(filename_in, 'rb') as f_in:
-        with open(filename_out, 'wb') as f_out:
-            block = f_in.read(64)
-            block_enciphered = cryptographer.encipher(keys, block, direction)
-            f_out.write(block_enciphered)
+        messageBytes = f_in.read()
+
+    messageBinary = ''
+    for b in messageBytes:
+        messageBinary += format(b, '08b')
+
+    messageBinaryBlocks = []
+    for i in range(len(messageBinary) // 64):
+        messageBinaryBlocks.append(list(map(int, messageBinary[i * 64: (i + 1) * 64])))
+
+    if len(messageBinary) % 64:
+        messageBinaryBlocks.append(list(map(int, messageBinary[-(len(messageBinary) % 64):])))
+        messageBinaryBlocks[-1].extend([0 for i in range(64 - len(messageBinaryBlocks[-1]))])
+
+    return messageBinaryBlocks
+    # print(messageBinaryBlocks)
+    # print(len(messageBinaryBlocks[0]))
+    # print(len(messageBinaryBlocks[-1]))
+
+
+def messageBlocksToFile(filename_out, messageBlocks):
+    messageBinary = []
+
+    for message in messageBlocks:
+        for i in range(8):
+            curStr = ''
+            for s in message[i * 8:(i + 1) * 8]:
+                curStr += str(s)
+            messageBinary.append(curStr)
+
+    messageOrd = [int(x, 2) for x in messageBinary]
+    messageBytes = [(x).to_bytes(1, byteorder='big') for x in messageOrd]
+
+    with open(filename_out, 'wb') as f_out:
+        for x in messageBytes:
+            f_out.write(x)
+    # print(messageBinary)
+    # print(messageOrd)
+    print(messageBytes)
+
+
+def encipherFile(keys, filename_in, filename_out, direction):
+    messageBlocks = fileToMessageBlocks(filename_in)
+
+    cryptographer = Cryptographer()
+
+    encipheredBlocks = []
+    for message in messageBlocks:
+        encipheredBlocks.append(cryptographer.encipher(keys, message, direction))
+
+    messageBlocksToFile(filename_out, encipheredBlocks)
+
 
 
 seed(0)
@@ -258,14 +305,13 @@ key = choices([0, 1], k=64)
 keys = RoundKeysGenerator().generate(key)
 
 
-f = "test.txt"
+f = "test_img.rar"
 f_enciphered = "test_enciphered.rar"
 f_deciphered = "test_deciphered.rar"
 
 
-
-encipherFile(f, f_enciphered, ENCIPHER)
-encipherFile(f_enciphered, f_deciphered, DECIPHER)
+encipherFile(keys, f, f_enciphered, ENCIPHER)
+encipherFile(keys, f_enciphered, f_deciphered, DECIPHER)
 
 
 # message = [0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, ]
