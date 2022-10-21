@@ -49,7 +49,7 @@ class RoundKeysGenerator:
         C_array = []  # 17 * 28
         D_array = []  # 17 * 28
 
-        C0, D0 = self.applyInitialPermutationB(initial_key)
+        C0, D0 = self.applyInitialPermutationB(initial_key)  # 64 -> 2*28
         C_array.append(C0)
         D_array.append(D0)
 
@@ -305,7 +305,7 @@ key = choices([0, 1], k=64)
 keys = RoundKeysGenerator().generate(key)
 
 
-f = "test_img.rar"
+f = "test_text.rar"
 f_enciphered = "test_enciphered.rar"
 f_deciphered = "test_deciphered.rar"
 
