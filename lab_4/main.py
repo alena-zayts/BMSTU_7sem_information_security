@@ -1,16 +1,19 @@
 from math import sqrt
 from random import choices, choice, seed
 import numpy as np
-from math import ceil, log2
+from math import ceil, log2, floor
 from base64 import *
 
 
 class RSA:
     def generateKeys(self, primesLimit):
         primes = self.generatePrimes(primesLimit)
-        P, Q = choice(primes[:len(primes) // 2]), choice(primes[len(primes) // 2:])
+        P = choice(primes)
+        primes.remove(P)
+        Q = choice(primes)
         if P == Q:
             raise ValueError("P=Q")
+        print(f'P: {P}, Q: {Q}')
         N = P * Q
         Fi = (P - 1) * (Q - 1)
         E = self.coSimple(Fi)
@@ -39,13 +42,15 @@ class RSA:
 
         primes = [i for i in range(primesLimit + 1) if isPrime[i]]
 
-        return primes
+        return primes[-LEAVE_LAST:]
 
     def coSimple(self, x):
         simples = []
-        for i in range(2, x):
+        for i in range(x, 2, -1):
             if self.gcd(i, x) == 1:
                 simples.append(i)
+            if len(simples) >= CO_SIMPLES_TO_GENERATE:
+                break
         return choice(simples)
 
     # НОД по алгоритму Евклида
@@ -109,19 +114,27 @@ def fromFile(filename):
     for b in messageBytes:
         messageBinary += format(b, '08b')
 
+    if len(messageBinary) % oneSymbolBit:
+        added = oneSymbolBit - (len(messageBinary) % oneSymbolBit)
+        messageBinary += '0'*added
+    else:
+        added = 0
+
     messageNums = []
     for i in range(len(messageBinary) // oneSymbolBit):
         messageNums.append(int(messageBinary[i * oneSymbolBit: (i + 1) * oneSymbolBit], 2))
     if len(messageBinary) % oneSymbolBit:
         messageNums.append(int(messageBinary[-(len(messageBinary) % oneSymbolBit):], 2))
 
-    return messageNums
+    return messageNums, added
 
 
-def toFile(messageNums, filename):
+def toFile(messageNums, filename, nulls_to_delete_from_bin=0):
     messageBinary = ""
     for num in messageNums:
         messageBinary += format(num, f'0{oneSymbolBit}b')
+    if nulls_to_delete_from_bin:
+        messageBinary = messageBinary[:-nulls_to_delete_from_bin]
     # у последнего числа первые нули убрать
     # messageBinary = ""
     # for num in messageNums[:-1]:
@@ -144,13 +157,16 @@ def toFile(messageNums, filename):
 
 
 def encipherFile(filename_in, filename_out):
-    messageNums = fromFile(filename_in)
+    global overflows, nulls_added_to_bin
+    overflows = []
+
+    messageNums, nulls_added_to_bin = fromFile(filename_in)
     encipheredNums = cryptographer.cipherMessageNumsArray(messageNums, e, n)
     toFile(encipheredNums, filename_out)
+
     print(messageNums)
     print(encipheredNums)
-    global overflows
-    overflows = []
+
     for num in messageNums:
         if num > n:
             overflows.append(True)
@@ -160,28 +176,46 @@ def encipherFile(filename_in, filename_out):
 
 
 def decipherFile(filename_in, filename_out):
-    messageNums = fromFile(filename_in)
+    global overflows, nulls_added_to_bin
+
+    messageNums, _ = fromFile(filename_in)
     encipheredNums = cryptographer.cipherMessageNumsArray(messageNums, d, n)
-    global overflows
+
     for i in range(len(encipheredNums)):
         if encipheredNums[i] > n and not overflows[i]:
             encipheredNums[i] -= n
         elif encipheredNums[i] < n and overflows[i]:
             encipheredNums[i] += n
-    toFile(encipheredNums, filename_out)
+
+    toFile(encipheredNums, filename_out, nulls_to_delete_from_bin=nulls_added_to_bin)
     print(messageNums)
     print(encipheredNums)
     return messageNums
 
 
+
+
 seed(0)
-PRIMES_LIMIT = 100
+PRIMES_LIMIT = int(1e6)
+LEAVE_LAST = 100
+CO_SIMPLES_TO_GENERATE = 100
 
 
-f = "test_text.rar"
-f_enciphered = "test_enciphered.rar"
-f_deciphered = "test_deciphered.rar"
+# f = "img.jpeg"
+# f_enciphered = "img_enciphered.jpeg"
+# f_deciphered = "img_deciphered.jpeg"
 
+# f = "img2.jpg"
+# f_enciphered = "img2_enciphered.jpg"
+# f_deciphered = "img2_deciphered.jpg"
+
+# f = "img3.png"
+# f_enciphered = "img3_enciphered.png"
+# f_deciphered = "img3_deciphered.png"
+
+f = "text.txt"
+f_enciphered = "text_enciphered.txt"
+f_deciphered = "text_deciphered.txt"
 
 cryptographer = RSA()
 e, d, n = cryptographer.generateKeys(PRIMES_LIMIT)
@@ -191,6 +225,8 @@ oneSymbolBit = ceil(log2(n))
 #oneSymbolBit += (8 - oneSymbolBit % 8)
 
 overflows = []
+nulls_added_to_bin = 0
 print(f'n: {n}, oneSymbolBit: {oneSymbolBit}, e: {e}, d: {d}')
+print(f'len of keys in bit: len(e)={len(format(e, "b"))}, len(d)={len(format(d, "b"))}')
 encipherFile(f, f_enciphered)
 decipherFile(f_enciphered, f_deciphered)
