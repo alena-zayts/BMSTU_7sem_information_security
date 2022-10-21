@@ -1,0 +1,201 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 266338304 bytes for Failed to commit area from 0x0000000702600000 to 0x0000000712400000 of length 266338304.
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (./src/hotspot/os/windows/os_windows.cpp:3301), pid=26076, tid=24060
+#
+# JRE version:  (11.0.10+8) (build )
+# Java VM: OpenJDK 64-Bit Server VM (11.0.10+8-b1145.96, mixed mode, sharing, tiered, compressed oops, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: org.jetbrains.git4idea.http.GitAskPassApp Username for 'https://github.com': 
+
+Host: Intel(R) Core(TM) i5-8259U CPU @ 2.30GHz, 8 cores, 15G,  Windows 10 , 64 bit Build 19041 (10.0.19041.1889)
+Time: Fri Oct 21 17:18:04 2022 RTZ 2 (зима) elapsed time: 0.018947 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000001d0efc92000):  JavaThread "Unknown thread" [_thread_in_vm, id=24060, stack(0x000000d0a1000000,0x000000d0a1100000)]
+
+Stack: [0x000000d0a1000000,0x000000d0a1100000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x5ece6a]
+V  [jvm.dll+0x722cd5]
+V  [jvm.dll+0x72422d]
+V  [jvm.dll+0x7248e3]
+V  [jvm.dll+0x2428d8]
+V  [jvm.dll+0x5ea244]
+V  [jvm.dll+0x5df2e5]
+V  [jvm.dll+0x2fdddb]
+V  [jvm.dll+0x2fdd4a]
+V  [jvm.dll+0x2fdc22]
+V  [jvm.dll+0x302b06]
+V  [jvm.dll+0x34b033]
+V  [jvm.dll+0x34b736]
+V  [jvm.dll+0x34b133]
+V  [jvm.dll+0x2d87d8]
+V  [jvm.dll+0x2d9987]
+V  [jvm.dll+0x701817]
+V  [jvm.dll+0x70300c]
+V  [jvm.dll+0x3585a9]
+V  [jvm.dll+0x6e516e]
+V  [jvm.dll+0x3c09e3]
+V  [jvm.dll+0x3c2c71]
+C  [jli.dll+0x5373]
+C  [ucrtbase.dll+0x21bb2]
+C  [KERNEL32.DLL+0x17034]
+C  [ntdll.dll+0x526a1]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x000001d0efaa4870, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+
+Other Threads:
+  0x000001d0efcac800 GCTaskThread "GC Thread#0" [stack: 0x000000d0a1100000,0x000000d0a1200000] [id=26504]
+  0x000001d0efd09800 ConcurrentGCThread "G1 Main Marker" [stack: 0x000000d0a1200000,0x000000d0a1300000] [id=26356]
+  0x000001d0efd0b000 ConcurrentGCThread "G1 Conc#0" [stack: 0x000000d0a1300000,0x000000d0a1400000] [id=3972]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffcea3d8db7]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x000001d0efc8f2a0] Heap_lock - owner thread: 0x000001d0efc92000
+
+Heap address: 0x0000000702600000, size: 4058 MB, Compressed Oops mode: Non-zero based: 0x0000000702600000
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (1 events):
+Event: 0.012 Loaded shared library C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin\zip.dll
+
+
+Dynamic libraries:
+0x00007ff6a4a70000 - 0x00007ff6a4a7a000 	C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin\java.exe
+0x00007ffd2be50000 - 0x00007ffd2c048000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffd2a970000 - 0x00007ffd2aa2d000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ffd29a20000 - 0x00007ffd29cf2000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ffd29600000 - 0x00007ffd29700000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ffd139f0000 - 0x00007ffd13a07000 	C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin\VCRUNTIME140.dll
+0x00007ffd129f0000 - 0x00007ffd12a09000 	C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin\jli.dll
+0x00007ffd2aea0000 - 0x00007ffd2b03d000 	C:\WINDOWS\System32\USER32.dll
+0x00007ffd295d0000 - 0x00007ffd295f2000 	C:\WINDOWS\System32\win32u.dll
+0x00007ffd2bdb0000 - 0x00007ffd2bddb000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ffcfd780000 - 0x00007ffcfda1a000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.1110_none_60b5254171f9507e\COMCTL32.dll
+0x00007ffd29700000 - 0x00007ffd2980f000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ffd2b110000 - 0x00007ffd2b1ae000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ffd29950000 - 0x00007ffd299ed000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ffd2bde0000 - 0x00007ffd2be10000 	C:\WINDOWS\System32\IMM32.DLL
+0x0000000050000000 - 0x000000005000c000 	C:\Program Files (x86)\360\Total Security\safemon\SafeWrapper.dll
+0x00007ffd2adf0000 - 0x00007ffd2ae9e000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ffd2a180000 - 0x00007ffd2a21c000 	C:\WINDOWS\System32\sechost.dll
+0x00007ffd2a220000 - 0x00007ffd2a345000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ffc5ef50000 - 0x00007ffc5efe2000 	C:\Program Files (x86)\360\Total Security\safemon\libzdtp64.dll
+0x00007ffd2b1c0000 - 0x00007ffd2b903000 	C:\WINDOWS\System32\SHELL32.dll
+0x00007ffd2a120000 - 0x00007ffd2a175000 	C:\WINDOWS\System32\SHLWAPI.dll
+0x00007ffd292b0000 - 0x00007ffd292ba000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ffc5dca0000 - 0x00007ffc5dd3d000 	C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin\msvcp140.dll
+0x00007ffcea0f0000 - 0x00007ffceabc0000 	C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin\server\jvm.dll
+0x00007ffd2b1b0000 - 0x00007ffd2b1b8000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007ffd02d50000 - 0x00007ffd02d77000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffd18c70000 - 0x00007ffd18c79000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ffd2b910000 - 0x00007ffd2b97b000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ffd27370000 - 0x00007ffd27382000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x00007ffd232b0000 - 0x00007ffd232c1000 	C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin\verify.dll
+0x00007ffd21270000 - 0x00007ffd21454000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ffd21070000 - 0x00007ffd2109c000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x00007ffd298c0000 - 0x00007ffd29942000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ffd19660000 - 0x00007ffd19689000 	C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin\java.dll
+0x00007ffd24c20000 - 0x00007ffd24c2b000 	C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin\jimage.dll
+0x00007ffd23290000 - 0x00007ffd232a8000 	C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin\zip.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.1110_none_60b5254171f9507e;C:\Program Files (x86)\360\Total Security\safemon;C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\jbr\bin\server
+
+VM Arguments:
+java_command: org.jetbrains.git4idea.http.GitAskPassApp Username for 'https://github.com': 
+java_class_path (initial): C:/Program Files/JetBrains/PyCharm Community Edition 2020.3.4/plugins/git4idea/lib/git4idea-rt.jar;C:/Program Files/JetBrains/PyCharm Community Edition 2020.3.4/lib/xmlrpc-2.0.1.jar;C:/Program Files/JetBrains/PyCharm Community Edition 2020.3.4/lib/commons-codec-1.14.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 4                                         {product} {ergonomic}
+     uint ConcGCThreads                            = 2                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 8                                         {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 1048576                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 266338304                                 {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 4255121408                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 1048576                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 5836300                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122910970                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122910970                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+     bool UseCompressedClassPointers               = true                                 {lp64_product} {ergonomic}
+     bool UseCompressedOops                        = true                                 {lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags
+ #1: stderr all=off uptime,level,tags
+
+Environment Variables:
+PATH=C:\Program Files\Git\mingw64\libexec\git-core;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\alena\bin;C:\Python310\Scripts;C:\Python310;C:\Program Files\Python37\Scripts;C:\Program Files\Python37;C:\ProgramData\Anaconda3;C:\ProgramData\Anaconda3\Library\mingw-w64\bin;C:\ProgramData\Anaconda3\Library\usr\bin;C:\ProgramData\Anaconda3\Library\bin;C:\ProgramData\Anaconda3\Scripts;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C;C:\msys64\home\alena\GRAPHVIS\Graphviz\bin;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files\dotnet;C:\Program Files\MiKTeX\miktex\bin\x64;C:\Program Files\PostgreSQL\12\bin;C:\Program Files\PostgreSQL\12\lib;C:\Program Files (x86)\Steel Bank Common Lisp;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\150\Tools\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\nodejs;C:\ProgramData\chocolatey\bin;C:\Users\alena\anaconda3;C:\Users\alena\anaconda3\Library\mingw-w64\bin;C:\Users\alena\anaconda3\Library\usr\bin;C:\Users\alena\anaconda3\Library\bin;C:\Users\alena\anaconda3\Scripts;C:\Users\alena\AppData\Local\Programs\Python\Python38-32\Scripts;C:\Users\alena\AppData\Local\Programs\Python\Python38-32;C:\Users\alena\AppData\Local\Microsoft\WindowsApps;C:\msys64\bin;C:\Program Files (x86)\Graphviz 2.44.1\bin;C:\Program Files (x86)\Dr. Memory\bin;C:\Program Files (x86)\Dr. Memory\bin;C:\Program Files\JetBrains\PyCharm 2020.3.4\bin;C:\Program Files\CMake\bin;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\bin\Hostx64\x64;C:\Qt\5.15.0\mingw81_64\include;C:\Qt\5.15.0\mingw81_64\include;C:\Program Files\JetBrains\PyCharm Community Edition 2020.3.4\bin;C:\msys64\home\alena;C:\Program Files\mingw-w64\
+USERNAME=alena
+DISPLAY=:0.0
+LC_ALL=en_US.UTF-8
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 142 Stepping 10, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10 , 64 bit Build 19041 (10.0.19041.1889)
+OS uptime: 2 days 0:39 hours
+Hyper-V role detected
+
+CPU:total 8 (initial active 8) (4 cores per cpu, 2 threads per core) family 6 model 142 stepping 10 microcode 0xec, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx, fma
+
+Memory: 4k page, system-wide physical 16230M (799M free)
+TotalPageFile size 25193M (AvailPageFile size 26M)
+current process WorkingSet (physical memory assigned to process): 11M, peak: 11M
+current process commit charge ("private bytes"): 61M, peak: 315M
+
+vm_info: OpenJDK 64-Bit Server VM (11.0.10+8-b1145.96) for windows-amd64 JRE (11.0.10+8-b1145.96), built on Feb 18 2021 01:38:16 by "" with MS VC++ 14.0 (VS2015)
+
+END.
