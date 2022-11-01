@@ -14,9 +14,10 @@ class RSA:
         if P == Q:
             raise ValueError("P=Q")
         print(f'P: {P}, Q: {Q}')
-        N = P * Q
-        Fi = (P - 1) * (Q - 1)
-        E = self.coSimple(Fi)
+        N = P * Q  # длина алфавита
+        Fi = (P - 1) * (Q - 1)  # Функция Эйлера
+        E = self.coSimple(Fi)   # открытый ключ - взаимно просто число с Fi
+        # секретный ключ - решение уравнения
         # ED mod Fi = 1 => ED + Fik = 1 (ax + by = 1)
         gcd, x, y = self.xgcd(E, Fi)
         D = int(x if x > 0 else x + Fi)
@@ -25,7 +26,8 @@ class RSA:
         return E, D, N
 
     def cipherNum(self, M, Key, N):
-        return pow(M, Key, N)
+        return self.powByMod(M, Key, N)
+        # return pow(M, Key, N)
 
     def cipherMessageNumsArray(self, M, Key, N):
         return [self.cipherNum(num, Key, N) for num in M]
@@ -201,21 +203,14 @@ LEAVE_LAST = 100
 CO_SIMPLES_TO_GENERATE = 100
 
 
-# f = "img.jpeg"
-# f_enciphered = "img_enciphered.jpeg"
-# f_deciphered = "img_deciphered.jpeg"
+f = "img.jpeg"
+f_enciphered = "img_enciphered.jpeg"
+f_deciphered = "img_deciphered.jpeg"
 
-# f = "img2.jpg"
-# f_enciphered = "img2_enciphered.jpg"
-# f_deciphered = "img2_deciphered.jpg"
 
-# f = "img3.png"
-# f_enciphered = "img3_enciphered.png"
-# f_deciphered = "img3_deciphered.png"
-
-f = "text.txt"
-f_enciphered = "text_enciphered.txt"
-f_deciphered = "text_deciphered.txt"
+# f = "text.txt"
+# f_enciphered = "text_enciphered.txt"
+# f_deciphered = "text_deciphered.txt"
 
 cryptographer = RSA()
 e, d, n = cryptographer.generateKeys(PRIMES_LIMIT)
