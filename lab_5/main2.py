@@ -71,7 +71,7 @@ def main():
     fpubkey = input("Input file with public key: (public.pem)")
     if not fpubkey:
         fpubkey = 'public.pem'
-    fdata = input(f"Input file to check sign: ({message_file})")
+    fdata = input(f"Input file to check symb: ({message_file})")
     if not fdata:
         fdata = message_file
 

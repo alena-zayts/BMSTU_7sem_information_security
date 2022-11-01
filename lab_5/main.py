@@ -38,7 +38,7 @@ class DocumentSigner:
         dec_key = rsa.PrivateKey.load_pkcs1(dec_key, format='PEM')
         with open(sign_filename, "rb") as f:
             sign = f.read()
-        # print(sign)
+        # print(symb)
         # print(dec_key)
 
         data = data.encode(ENCODING)
@@ -48,7 +48,7 @@ class DocumentSigner:
         return hashed_data == hashed_data_according_to_signature
 
         # try:
-        #     hashed_data_according_to_signature = self.dec_func(sign, dec_key)
+        #     hashed_data_according_to_signature = self.dec_func(symb, dec_key)
         #     return hashed_data == hashed_data_according_to_signature
         # except:
         #     return False
