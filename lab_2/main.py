@@ -1,6 +1,5 @@
 from random import shuffle, seed
 import copy
-import os
 
 seed(0)
 SYMBOLS_COUNT = 256

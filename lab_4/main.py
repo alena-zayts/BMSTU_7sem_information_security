@@ -1,8 +1,6 @@
 from math import sqrt
-from random import choices, choice, seed
-import numpy as np
-from math import ceil, log2, floor
-from base64 import *
+from random import choice, seed
+from math import ceil, log2
 
 
 class RSA:
@@ -80,16 +78,6 @@ class RSA:
             old_y, y = y, old_y - quotient * y
 
         return a, old_x, old_y
-
-        # a, b = max(a, b), min(a, b)
-        # m = np.eye(2, 2)
-        #
-        # while b != 0:
-        #     quotient = a // b
-        #     m = np.matmul(m, np.matrix([[-quotient, 1], [1, 0]]))
-        #     a, b = b, a % b
-        #
-        # return a, m[0, 1], m[1, 1]
 
     # (a^k) mod n
     # http://poivs.tsput.ru/Downloads/Article/2150/Алгоритмы%20быстрого%20возведения%20в%20степень%20по%20модулю.pdf
@@ -216,8 +204,6 @@ cryptographer = RSA()
 e, d, n = cryptographer.generateKeys(PRIMES_LIMIT)
 # получаем число в кольце вычетов по n, поэтому каждое число надо кодировать как минимум ceil(log2(n)) битами
 oneSymbolBit = ceil(log2(n))
-# используем кодировку по 8 бит, поэтому число должно также делиться на 8
-#oneSymbolBit += (8 - oneSymbolBit % 8)
 
 overflows = []
 nulls_added_to_bin = 0

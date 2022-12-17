@@ -4,7 +4,6 @@ import hashlib
 # sha2 https://www.mytecbits.com/internet/python/sha-2-hash-code
 
 public_key_file_name = 'public.pem'
-# private_key_file_name = 'private.pem'
 signature_file_name = "signature_real"
 another_signature_file_name = 'signature_broken'
 
@@ -18,9 +17,6 @@ class DocumentSigner:
 
 
     def signData(self, data, enc_key):
-        # with open(priv_filename, "rb") as k:
-        #     enc_key = k.read()
-        # enc_key = rsa.PrivateKey.load_pkcs1(enc_key, format='PEM')
 
         data = data.encode(ENCODING)
         hashed_data = bytes(self.hash_func(data).encode(ENCODING))
@@ -47,18 +43,12 @@ class DocumentSigner:
         hashed_data_according_to_signature = self.dec_func(sign, dec_key)
         return hashed_data == hashed_data_according_to_signature
 
-        # try:
-        #     hashed_data_according_to_signature = self.dec_func(symb, dec_key)
-        #     return hashed_data == hashed_data_according_to_signature
-        # except:
-        #     return False
-
 
 
 ENCODING = 'utf8'
 
 
-data_filename = "text.txt"
+# data_filename = "text.txt"
 data_filename = "img.jpeg"
 with open(data_filename, 'rb') as f_in:
     messageBytes = f_in.read()
